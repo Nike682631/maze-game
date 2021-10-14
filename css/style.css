@@ -1,221 +1,133 @@
-body {
-    font-family: Calibri;
-    transition: 0.2s ease;
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#heading {
     text-align: center;
-  }
-body.success  {
-  background-color: #b7f0b7;
-  transition: 0.2s ease;
-}
-/* center everything in game container */
-.game-container {
-  margin: 0px auto;
-}  
-p {
-  margin: 10px 0px;
-  padding: 0px;
-  
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: xx-large;
 }
 
-
-/*
- * Map on left, controls on right
- * Adapted for the mobile Medium app
- */
-#map-and-controls {
-  display: flex;
-  justify-content: center;
-}
-/*
- * Controls
- */
-
-#controls {
-  margin-left: 10px;
-  text-align: center;
-}
-/*
- * Container for right and left buttons
- */
-#controls #horiz {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/* 
- * General button styles
- */
-#controls button {
-  padding: 10px 10px;
-  margin-top: 10px;
-  background-color: #DDD;
-  border: 1px solid #000;
-  width: 38px;
-  height: 38px;
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-}
-/*
- * Spacing between horiz buttons
- */
-button#right {
-  margin-left: 5px;
-}
-button#left {
-  margin-right: 5px;
+#heading {
+    margin: 0 auto
 }
 
-/*
- * General button arrow styles
- */
-#controls button::before {
-  content:'';
-  width: 0px;
-  position: absolute;
-}
-/*
- * Specific Arrow Styles
- */
-button#left::before {
-  border-top: 10px solid transparent;
-  border-right: 15px solid #000;
-  border-bottom: 10px solid transparent;
-  left: 10px;
-  top: 9px;
-}
-button#right::before {
-  border-top: 10px solid transparent;
-  border-left: 15px solid #000;
-  border-bottom: 10px solid transparent;
-  left: 12px;
-  top: 9px;
-}
-button#up::before {
-  border-right: 10px solid transparent;
-  border-left: 10px solid transparent;
-  border-bottom: 15px solid #000;
-  left: 9px;
-  top: 9px;
-}
-button#down::before {
-  border-right: 10px solid transparent;
-  border-left: 10px solid transparent;
-  border-top: 15px solid #000;
-  left: 9px;
-  top: 12px;
-}
-#success-msg {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  position: absolute;
-  padding: 5px 5px;
-  background-color: rgba(0,0,0,0.5);
-  color: white;
-  width: calc(100% - 8px);
-}
- body.success #success-msg {
-  opacity: 1;
-  transition: opacity 0.2 ease;
+#canvas {
+    background: #99afa3;
+    display: block;
+    margin: 0 auto;
 }
 
-
-
-/*
- * Layers and tiles are positioned absolutely
- * within coordinate system of .game-map 
- */
-div.layer,
-div.layer div {
-  position: absolute;
-}
-/* border for floors and wall */
-#tiles div {
-  border: 1px solid grey;
+#c {
+    background: #eeeeee;
+    display: block;
+    margin: 0 auto;
 }
 
-/*
- * Default wall and floor styles
- */
-
-.default .floor {
-  background-color: lightgrey;
+#timerel {
+    background: #eeeeee;
+    display: block;
+    margin: 0 auto;
 }
 
-.default .wall {
-  background-color: skyblue;
-}
-/*
- * grassland theme  
- */
-.grassland .floor {
-  background-color: #7bb76d;
-}
-.grassland .wall {
-  background-color: #806d51;
-}
-.grassland #player {
- background-color: #b2ccec;
+/* The Modal (background) */
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 20%;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
 }
 
-/* 
- * dungeon theme
- */
-.dungeon .floor {
-  background-color: darkgrey;
-}
-.dungeon .wall {
-  background-color: #9c649c;
-}
-.dungeon #player {
- background-color: #ab1431;
-}
-/*
- * player and goal are slightly smaller than tiles
- */
-.player, 
-.goal {
-  transform-origin: center;
-  transform:scale(0.85);
-}
-/*
- * Goal colors
- */
-.goal {
-  background-color: #FFD700;
-  border: 1px solid #98720b;
-}
-/*
- *  Player default colors
- */
-.player {
-  background-color: #90ee90;
-  border: 1px solid #008000;
-  transition: left 0.2s ease, top 0.2s ease;
-}
-/*
- * Player wobbles when colliding with wall or border
- */
-.player.collide {  
-  animation: wobble 0.5s;
-  animation-iteration-count: infinite;
-  transition: background-color 0.2s;
-  
+/* Modal Content */
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
 }
 
-/* 
- * Wobble animation
- */
-@keyframes wobble {
-  0% { transform: scale(0.85) translate(1px, 1px); }
-  10% { transform: scale(0.85) translate(-1px, -2px); }
-  20% { transform: scale(0.85) translate(-3px, 0px); }
-  30% { transform: scale(0.85) translate(3px, 2px); }
-  40% { transform: scale(0.85) translate(1px, -1px);}
-  50% { transform: scale(0.85) translate(-1px, 2px); }
-  60% { transform: scale(0.85) translate(-3px, 1px); }
-  70% { transform: scale(0.85) translate(3px, 1px); }
-  80% { transform: scale(0.85) translate(-1px, -1px); }
-  90% { transform: scale(0.85) translate(1px, 2px); }
-  100% { transform: scale(0.85) translate(1px, -2px);; }
+/* Add Animation */
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* The Close Button */
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #41d9f4;
+    color: white;
+    text-align: center;
+    height: 50%;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #f4bc42;
+    color: white;
+    text-align: center;
+    height: 50%;
 }

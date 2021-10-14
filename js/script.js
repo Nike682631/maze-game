@@ -1,513 +1,430 @@
-let app = {};
 
+// Get the modal
+var modal = document.getElementById('myModal');
 
-(function(context) {
-let levels = [];
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
 
-let levels = [];
-levels[0] = {
-    map: [
-        [1, 1, 0, 0, 1],
-        [1, 0, 0, 0, 0],
-        [0, 0, 1, 1, 0],
-        [0, 0, 0, 1, 0],
-        [0, 1, 0, 1, 0]
-    ],
+// When the user clicks the button, open the modal
+modelfungo = function () {
+    console.log("func called")
+    modal.style.display = "block";
+    x = document.querySelector(".gamehead");
+    x.textContent = "Game Over"
 
-    player: {
-        x: 0,
-        y: 4
-    },
-    goal: {
-        x: 4,
-        y: 1
-    },
-    theme: 'default',
-};
-// second level
-levels[1] = {
-    map: [
-        [1, 0, 1, 1, 1, 1],
-        [0, 0, 0, 0, 0, 0],
-        [0, 1, 1, 1, 0, 0],
-        [0, 0, 0, 1, 1, 0],
-        [0, 1, 0, 1, 0, 0]
-    ],
-    theme: 'grassland',
-    player: {
-        x: 2,
-        y: 4
-    },
-    goal: {
-        x: 4,
-        y: 4
-    }
-};
-// third level
-levels[2] = {
-    map: [
-        [1, 0, 1, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0, 1, 0],
-        [1, 0, 1, 1, 0, 0, 0],
-        [1, 0, 0, 1, 0, 1, 0],
-        [1, 1, 0, 0, 1, 0, 0]
-    ],
-    theme: 'dungeon',
-    player: {
-        x: 2,
-        y: 4
-    },
-    goal: {
-        x: 6,
-        y: 4
-    }
-};
-
-function Game(id, level) {
-
-    this.el = document.getElementById(id);
-
-    // level addition
-    this.level_idx = 0;
-
-    // establish the basic properties common to all this objects.
-    this.tileTypes = ['floor', 'wall'];
-    this.tileDim = 32;
-    // inherit the level's properties: map, player start, goal start.
-    this.map = level.map;
-
-    // level switch
-    this.theme = level.theme;
-
-    // make a copy of the level's player.
-    this.player = { ...level.player };
-
-    // create a property for the DOM element, to be set later.
-    this.player.el = null;
-
-    // make a copy of the goal.
-    this.goal = { ...level.goal };
 }
 
-/*
- * Create a tile or sprite <div> element.
- * @param {Number} x - the horizontal coordinate the 2D array.
- * @param {Number} y - the vertical coordinate in the 2D array.
- */
-Game.prototype.createEl = function (x, y, type) {
-    // create one tile.
-    let el = document.createElement('div');
+modelfunwin = function () {
+    console.log("func called")
+    modal.style.display = "block";
+    x = document.querySelector(".gamehead");
+    x.textContent = "Congrats! You Win"
 
-    // two class names: one for tile, one or the tile type.
-    el.className = type;
-
-    // set width and height of tile based on the passed-in dimensions.
-    el.style.width = el.style.height = this.tileDim + 'px';
-
-    // set left positions based on x coordinate.
-    el.style.left = x * this.tileDim + 'px';
-
-    // set top position based on y coordinate.
-    el.style.top = y * this.tileDim + 'px';
-
-    return el;
 }
 
-/*
- * Applies the level theme as a class to the game element. 
- * Populates the map by adding tiles and sprites to their respective layers.
- */
-Game.prototype.populateMap = function () {
+document.getElementById("demo").addEventListener("click", myFunction);
 
-    // add theme call
-    this.el.className = 'game-container ' + this.theme;
+function myFunction() {
+    document.location.reload();
+}
 
-    // make a reference to the tiles layer in the DOM.
-    let tiles = this.el.querySelector('#tiles');
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+    modal.style.display = "none";
+}
 
-    // set up our loop to populate the grid.
-    for (var y = 0; y < this.map.length; ++y) {
-        for (var x = 0; x < this.map[y].length; ++x) {
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
-            let tileCode = this.map[y][x];
 
-            // determine tile type using code
-            // index into the tileTypes array using the code.
-            let tileType = this.tileTypes[tileCode];
+//var now = new Date().getTime();
+function startTimer(duration, display) {
+    var start = Date.now(),
+        diff,
+        minutes,
+        seconds;
 
-            // call the helper function
-            let tile = this.createEl(x, y, tileType);
+    function timer() {
+        if (playing) {
+            diff = duration - (((Date.now() - start) / 1000) | 0);
+            minutes = (diff / 60) | 0;
+            seconds = (diff % 60) | 0;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            display.textContent = "Game ends in " + minutes + ":" + seconds;
 
-            // add to layer
-            tiles.appendChild(tile);
+            if (diff <= 0) {
+                display.textContent = "Game Over";
+                start = Date.now() + 1000;
+                playing = false
+                modelfungo();
+            }
+        }
+    };
+    timer();
+    setInterval(timer, 1000)
+}
+
+window.onload = function () {
+    twominutes = 30;
+    x = document.querySelector("#timerel");
+    startTimer(twominutes, x)
+}
+playing = true
+window.addEventListener('keydown', doKeyDown, true);
+
+function doKeyDown(evt) {
+    var handled = false;
+    if (playing) {
+        switch (evt.keyCode) {
+            case 38:  /* Up arrow was pressed */
+                m.moveup("canvas");
+                handled = true
+                break;
+            case 87:  /* Up arrow was pressed */
+                m.moveup("canvas");
+                handled = true
+                break;
+            case 40:  /* Down arrow was pressed */
+                m.movedown("canvas");
+                handled = true
+                break;
+            case 83:  /* Down arrow was pressed */
+                m.movedown("canvas");
+                handled = true
+                break;
+            case 37:  /* Left arrow was pressed */
+                m.moveleft("canvas");
+                handled = true
+                break;
+            case 65:  /* Left arrow was pressed */
+                m.moveleft("canvas");
+                handled = true
+                break;
+            case 39:  /* Right arrow was pressed */
+                m.moveright("canvas");
+                handled = true
+                break;
+            case 68:  /* Right arrow was pressed */
+                m.moveright("canvas");
+                handled = true
+                break;
+        }
+        if (m.checker("canvas"))
+            playing = false
+        console.log(m.getMoves())
+
+    }
+    if (handled)
+        evt.preventDefault(); // prevent arrow keys from scrolling the page (supported in IE9+ and all other browsers)
+}
+
+
+var dsd = function (size) {
+    this.N = size;
+    this.P = new Array(this.N);
+    this.R = new Array(this.N);
+
+    this.init = function () {
+        for (var i = 0; i < this.N; i++) {
+            this.P[i] = i;
+            this.R[i] = 0;
         }
     }
-}
 
-/*
- * Place the player or goal sprite.
- * @param {String} type - either 'player' or 'goal', used by createEl and becomes DOM ID
- */
-Game.prototype.placeSprite = function (type) {
-
-    // syntactic sugar
-    let x = this[type].x
-
-    let y = this[type].y;
-
-    // reuse the createTile function
-    let sprite = this.createEl(x, y, type);
-
-    sprite.id = type;
-
-    // set the border radius of the sprite.
-    sprite.style.borderRadius = this.tileDim + 'px';
-
-    // get half the difference between tile and sprite.
-
-    // grab the layer
-    let layer = this.el.querySelector('#sprites');
-
-    layer.appendChild(sprite);
-
-    return sprite;
-}
-/*
- * Triggers a collide animation on the player sprite.
- */
-Game.prototype.collide = function () {
-    this.player.el.className += ' collide';
-
-    let obj = this;
-
-    window.setTimeout(function () {
-        obj.player.el.className = 'player';
-    }, 200);
-
-    return 0;
-
-};
-/*
- * Moves the player sprite left.
- */
-Game.prototype.moveLeft = function () {
-    // if at the boundary, return
-    if (this.player.x == 0) {
-        this.collide();
-        return;
-    }
-    // itentify next tile
-    let nextTile = this.map[this.player.y][this.player.x - 1];
-
-    // if next tile is a wall, add collide effect and return
-    if (nextTile == 1) {
-        this.collide();
-        return;
-    }
-    // change coordinates of player object
-    this.player.x -= 1;
-    // update location of DOM element
-    this.updateHoriz();
-};
-/*
- * Moves the player sprite up.
- */
-Game.prototype.moveUp = function () {
-    if (this.player.y == 0) {
-        // at end: these could be combined
-        this.collide();
-        return;
-    }
-
-    let nextTile = this.map[this.player.y - 1][this.player.x];
-    if (nextTile == 1) {
-        this.collide();
-        return;
-    }
-    this.player.y -= 1;
-    this.updateVert();
-
-};
-/*
- * Moves the player sprite right.
- */
-Game.prototype.moveRight = function () {
-    if (this.player.x == this.map[this.player.y].length - 1) {
-        this.collide();
-        return;
-    }
-    nextTile = this.map[this.player.y][this.player.x + 1];
-
-    if (nextTile == 1) {
-        this.collide()
-        return;
-    }
-    this.player.x += 1;
-
-    this.updateHoriz();
-};
-/*
- * Moves player sprite down.
- */
-Game.prototype.moveDown = function () {
-    if (this.player.y == this.map.length - 1) {
-        this.collide();
-        return;
-    }
-    // find the next tile in the 2D array.
-
-    let nextTile = this.map[this.player.y + 1][this.player.x];
-    if (nextTile == 1) {
-        this.collide()
-        return;
-    }
-    this.player.y += 1;
-    this.updateVert();
-
-};
-
-/* 
-*  Updates vertical position of player sprite based on object's y coordinates.
-*/
-Game.prototype.updateVert = function () {
-    this.player.el.style.top = this.player.y * this.tileDim + 'px';
-};
-/* 
-*  Updates horizontal position of player sprite based on object's x coordinates.
-*/
-Game.prototype.updateHoriz = function () {
-    this.player.el.style.left = this.player.x * this.tileDim + 'px';
-};
-/*
-* Moves player based on keyboard cursor presses.
-*/
-Game.prototype.movePlayer = function (event) {
-    event.preventDefault();
-
-    if (event.keyCode < 37 || event.keyCode > 40) {
-        return;
-    }
-
-    switch (event.keyCode) {
-        case 37:
-            this.moveLeft();
-            break;
-
-        case 38:
-            this.moveUp();
-            break;
-
-        case 39:
-            this.moveRight();
-            break;
-
-        case 40:
-            this.moveDown();
-            break;
-    }
-}
-/*
-* Check on whether goal has been reached.
-*/
-Game.prototype.checkGoal = function () {
-    let body = document.querySelector('body');
-
-    if (this.player.y == this.goal.y &&
-        this.player.x == this.goal.x) {
-
-        body.className = 'success';
-    }
-    else {
-        body.className = '';
-    }
-}
-
-/*
- * Changes the level of the game object.
- */
-Game.prototype.changeLevel = function () {
-
-    // update the level index.
-    this.level_idx++;
-
-    // if higher than max index, set back to zero.
-    if (this.level_idx > levels.length - 1) {
-        this.level_idx = 0;
-    }
-
-    // get the level at this index.
-    let level = levels[this.level_idx];
-
-    // sync the map with the level map.
-    this.map = level.map;
-    // sync the theme with the level theme.
-    this.theme = level.theme;
-
-    // make a copy of the level's player object, since x and y change during the game.
-    this.player = { ...level.player };
-
-    // make a copy of the level's goal object, since x and y change between levels.
-    this.goal = { ...level.goal };
-}
-
-/*
- * If goal has been reached, 
- */
-Game.prototype.addMazeListener = function () {
-
-    // grab the map
-
-    let map = this.el.querySelector('.game-map');
-
-    // grab reference to game object since we are going into a function 
-    // and "this" will no longer refer to the game object
-
-    let obj = this;
-
-    // if game board is clicked or tapped, see if we should change levels
-    map.addEventListener('mousedown', function (e) {
-
-        // if not at the goal, then get outta here
-        if (obj.player.y != obj.goal.y ||
-            obj.player.x != obj.goal.x) {
-            return;
+    this.union = function (x, y) {
+        var u = this.find(x);
+        var v = this.find(y);
+        if (this.R[u] > this.R[v]) {
+            this.R[u] = this.R[v] + 1;
+            this.P[u] = v;
         }
-        // change level of game object by changing it's properties
-        obj.changeLevel();
+        else {
+            this.R[v] = this.R[u] + 1;
+            this.P[v] = u;
+        }
+    }
 
-        // get the two layers
-        let layers = obj.el.querySelectorAll('.layer');
+    this.find = function (x) {
+        if (x == this.P[x])
+            return x;
+        this.P[x] = this.find(this.P[x]);
+        return this.P[x];
+    }
+};
 
-        // clear tiles and sprites from layers
-        for (layer of layers) {
-            layer.innerHTML = '';
+function random(min, max) { return (min + (Math.random() * (max - min))); };
+function randomChoice(choices) { return choices[Math.round(random(0, choices.length - 1))]; };
+
+var maze = function (X, Y) {
+    this.N = X;
+    this.M = Y;
+    this.S = 25;
+    this.moves = 0;
+    this.Board = new Array(2 * this.N + 1);
+    this.EL = new Array();
+    this.vis = new Array(2 * this.N + 1);
+    this.delay = 2;
+    this.x = 1;
+    this.init = function () {
+        for (var i = 0; i < 2 * this.N + 1; i++) {
+            this.Board[i] = new Array(2 * this.M + 1);
+            this.vis[i] = new Array(2 * this.M + 1);
         }
 
-        // place the new level.
-        obj.placeLevel();
+        for (var i = 0; i < 2 * this.N + 1; i++) {
+            for (var j = 0; j < 2 * this.M + 1; j++) {
+                if (!(i % 2) && !(j % 2)) {
+                    this.Board[i][j] = '+';
+                }
+                else if (!(i % 2)) {
+                    this.Board[i][j] = '-';
+                }
+                else if (!(j % 2)) {
+                    this.Board[i][j] = '|';
+                }
+                else {
+                    this.Board[i][j] = ' ';
+                }
+                this.vis[i][j] = 0;
+            }
+        }
+    }
 
-        // check the goal to reset the message.
-        obj.checkGoal();
 
-    });
+    this.add_edges = function () {
+        for (var i = 0; i < this.N; i++) {
+            for (var j = 0; j < this.M; j++) {
+                if (i != this.N - 1) {
+                    this.EL.push([[i, j], [i + 1, j], 1]);
+                }
+                if (j != this.M - 1) {
+                    this.EL.push([[i, j], [i, j + 1], 1]);
+                }
+            }
+        }
+    }
+
+
+    //Hash function
+    this.h = function (e) {
+        return e[1] * this.M + e[0];
+    }
+    this.randomize = function (EL) {
+        for (var i = 0; i < EL.length; i++) {
+            var si = Math.floor(Math.random() * 387) % EL.length;
+            var tmp = EL[si];
+            EL[si] = EL[i];
+            EL[i] = tmp;
+        }
+        return EL;
+    }
+
+    this.breakwall = function (e) {
+        var x = e[0][0] + e[1][0] + 1;
+        var y = e[0][1] + e[1][1] + 1;
+        this.Board[x][y] = ' ';
+    }
+
+    this.gen_maze = function () {
+        this.EL = this.randomize(this.EL);
+        var D = new dsd(this.M * this.M);
+        D.init();
+        var s = this.h([0, 0]);
+        var e = this.h([this.N - 1, this.M - 1]);
+        this.Board[1][0] = ' ';
+        this.Board[2 * this.N - 1][2 * this.M] = ' ';
+        //Run Kruskal
+        for (var i = 0; i < this.EL.length; i++) {
+            var x = this.h(this.EL[i][0]);
+            var y = this.h(this.EL[i][1]);
+            if (D.find(s) == D.find(e)) {
+                if (!(D.find(x) == D.find(s) && D.find(y) == D.find(s))) {
+                    if (D.find(x) != D.find(y)) {
+                        D.union(x, y);
+                        this.breakwall(this.EL[i]);
+                        this.EL[i][2] = 0;
+                    }
+
+                }
+                //break;
+            }
+
+            else if (D.find(x) != D.find(y)) {
+                D.union(x, y);
+                this.breakwall(this.EL[i]);
+                this.EL[i][2] = 0;
+            }
+            else {
+                continue;
+            }
+        }
+
+    };
+
+
+    this.draw_canvas = function (id) {
+        this.canvas = document.getElementById(id);
+        var scale = this.S;
+        temp = []
+        if (this.canvas.getContext) {
+            this.ctx = this.canvas.getContext('2d');
+            this.Board[1][0] = '$'
+            for (var i = 0; i < 2 * this.N + 1; i++) {
+                for (var j = 0; j < 2 * this.M + 1; j++) {
+                    if (this.Board[i][j] != ' ') {//} && this.Board[i][j] != '&') {
+                        this.ctx.fillStyle = "#0b052d";
+                        this.ctx.fillRect(scale * i, scale * j, scale, scale);
+                    }
+                    else if (i < 5 && j < 5)
+                        temp.push([i, j])
+                }
+            }
+            x = randomChoice(temp)
+            //    console.log(temp)
+            this.Board[x[0]][x[1]] = '&'
+            this.ctx.fillStyle = "#c4192a";
+            this.ctx.fillRect(scale * x[0], scale * x[1], scale, scale);
+        }
+    };
+
+    this.checkPos = function (id) {
+        for (var i = 0; i < 2 * this.N + 1; i++) {
+            for (var j = 0; j < 2 * this.M + 1; j++) {
+                if (this.Board[i][j] == '&') {
+                    // console.log(i,j)
+                    return [i, j]
+                }
+            }
+        }
+    }
+
+    this.moveclear = function (a, b) {
+        var scale = this.S;
+        this.ctx = this.canvas.getContext('2d');
+        this.ctx.fillStyle = "#e27158";
+        this.ctx.fillRect(scale * a, scale * b, scale, scale);
+        this.Board[a][b] = ' '
+    }
+
+    this.move = function (a, b) {
+        var scale = this.S;
+        this.ctx = this.canvas.getContext('2d');
+        this.ctx.fillStyle = "#c4192a";
+        this.ctx.fillRect(scale * a, scale * b, scale, scale);
+        this.Board[a][b] = '&'
+    }
+
+    this.moveup = function (id) {
+        cord = this.checkPos(id);
+        var scale = this.S;
+        i = cord[0]
+        j = cord[1]
+        j -= 1
+        if (j < 0)
+            return
+        else if (j > 2 * this.M)
+            return
+        else if (this.Board[i][j] == ' ') {
+            this.moveclear(i, j + 1);
+            this.move(i, j);
+            this.moves += 1;
+        }
+        else
+            return
+    }
+
+    this.movedown = function (id) {
+        cord = this.checkPos(id);
+        var scale = this.S;
+        i = cord[0]
+        j = cord[1]
+        j += 1
+        if (j < 0)
+            return
+        else if (j > 2 * this.M)
+            return
+        else if (this.Board[i][j] == ' ') {
+            this.moveclear(i, j - 1);
+            this.move(i, j);
+            this.moves += 1;
+        }
+        else
+            return
+    }
+
+    this.moveleft = function (id) {
+        cord = this.checkPos(id);
+        var scale = this.S;
+        i = cord[0]
+        j = cord[1]
+        i -= 1
+        if (i < 0)
+            return
+        else if (i > 2 * this.N)
+            return
+        else if (this.Board[i][j] == ' ') {
+            this.moveclear(i + 1, j);
+            this.move(i, j);
+            this.moves += 1;
+        }
+        else
+            return
+    }
+
+    this.moveright = function (id) {
+        cord = this.checkPos(id);
+        var scale = this.S;
+        i = cord[0]
+        j = cord[1]
+        i += 1
+        if (i < 0)
+            return
+        else if (i > 2 * this.N)
+            return
+        else if (this.Board[i][j] == ' ') {
+            this.moveclear(i - 1, j);
+            this.move(i, j);
+            this.moves += 1;
+        }
+        else
+            return
+    }
+    this.checker = function (id) {
+        //      console.log("win");
+        cord = this.checkPos(id);
+        i = cord[0]
+        j = cord[1]
+        //    console.log(cord)
+        if ((i == 19 && j == 20) || (i == 1 && j == 0)) {
+            modelfunwin();
+            //           alert("YOU WIN, CONGRATULATIONS!");
+            //
+            return 1
+        }
+        return 0
+    }
+
+    this.getMoves = function () {
+        return this.moves;
+    }
+
 };
 
-/*
- *  Responds to a keydown event by moving the player and checking the goal.
- */
-Game.prototype.keyboardListener = function () {
-    document.addEventListener('keydown', event => {
-        this.movePlayer(event);
-        this.checkGoal();
-    });
-
+m = new maze(10, 10);
+m.init();
+m.add_edges();
+m.gen_maze();
+m.draw_canvas("canvas");
+function drawMoves() {
+    document.getElementById("c").innerHTML = "Moves: " + m.getMoves()
 }
-/*
- * Adds mouse down listeners to buttons
- */
-Game.prototype.buttonListeners = function () {
-    let up = document.getElementById('up');
-    let left = document.getElementById('left');
-    let down = document.getElementById('down')
-    let right = document.getElementById('right');
+// drawMoves();
+setInterval(drawMoves, 100);
 
-    // the sprite is out of date
-    let obj = this;
-    up.addEventListener('mousedown', function () {
+    //addEvents();
 
-        obj.moveUp();
-        obj.checkGoal();
-    });
-    down.addEventListener('mousedown', function () {
-        obj.moveDown();
-        obj.checkGoal();
-    });
-    left.addEventListener('mousedown', function () {
-        obj.moveLeft();
-        obj.checkGoal();
-    });
-    right.addEventListener('mousedown', function () {
-        obj.moveRight();
-        obj.checkGoal();
-    });
-
-}
-
-/*
-* Sets the message of the text element.
-* @param {String} msg - The message to be printed.
-*/
-Game.prototype.setMessage = function (msg) {
-    let text_el = this.el.querySelector('.text');
-    text_el.textContent = msg;
-};
-
-/*
- * Sizes up the map based on array dimensions.
- */
-Game.prototype.sizeUp = function () {
-
-    // inner container so that text can be below it
-    let map = this.el.querySelector('.game-map');
-
-    // inner container, height. Need this.map
-    map.style.height = this.map.length * this.tileDim + 'px';
-
-    map.style.width = this.map[0].length * this.tileDim + 'px';
-
-};
-
-
-/*
- * Populates the map.
- * Sizes up the map based on array dimensions.
- * Gives the goal and player some references.
- */
-Game.prototype.placeLevel = function () {
-    this.populateMap();
-
-    this.sizeUp();
-
-    this.placeSprite('goal');
-
-    // we want the DOM element that gets returned...
-    let playerSprite = this.placeSprite('player');
-
-    // ..so we can store it in the playerSprite element.
-    this.player.el = playerSprite;
-
-}
-/*
- *  Add keyboard, button, and maze tap listeners
- */
-Game.prototype.addListeners = function () {
-
-    this.keyboardListener();
-
-    this.buttonListeners();
-
-    // changing levels
-    this.addMazeListener();
-}
-
-/*
- *  Initialization function called once
- */
-context.init = function () {
-
-    let myGame = new Game('game-container-1', levels[0]);
-
-    // encapsulate for multi-level
-    myGame.placeLevel();
-
-    // add listeners
-    myGame.addListeners();
-
-}
-})(app);
-
-/*
- * Tell app to activate the init() function.
- */
-
-app.init();

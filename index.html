@@ -9,29 +9,42 @@
 </head>
 
 <body>
-    <div id="game-container-1" class="game-container">
-        <div id="map-and-controls">
-            <div id="game-map-1" class="game-map">
-                <div id="tiles" class="layer"></div>
-                <div id="sprites" class="layer"></div>
-                
-                <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
-            </div>
-            <div id="controls">
-                <button id="up"></button>
-                <div id="horiz">
-                    <button id="left"></button>
-                    <button id="right"></button>
+    <section>
+        <div id="wrapper" style="margin-left:auto; margin-right:auto;">
+            <h1 id="heading"
+                style="background-color: #a59e9a; text-decoration-style: solid; color: #F8F8F8; width: 40%; margin-top: 0px; margin-bottom: 10px">
+                Lost Path</h1>
+            <div id="maze">
+                <p style="text-align: center;margin-bottom: 10px">Find the way out of Maze in 30 seconds!</p>
+                <div id="c"
+                    style="margin-left:auto; margin-right:auto;margin-bottom: 10px;text-align: center;width: 10%;font-size: large">
                 </div>
-                <button id="down"></button>
+
+                <canvas id="canvas" width="523" height="523" style="margin-left:auto; margin-right:auto">
+                    This text is displayed if your browser does not support HTML5 Canvas.
+                </canvas>
+                <div id="timerel"
+                    style="margin-left:auto; margin-right:auto;margin-top:0px;text-align: center;width: 15%;font-size: large">
+                </div>
+
+            </div>
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2 class="gamehead"></h2>
+                    </div>
+                    <div class="modal-footer">
+                        <h2 id="demo" onmouseover="" style="cursor:pointer;">Play Again?</h2>
+                    </div>
+                </div>
             </div>
         </div>
-        <p id="text-1" class="text">
-            Use cursor keys or buttons.
-            <p>
-            </div>
-            
-            <script src="js/script.js"></script>
+        <script src = "js/script.js"></script>
+    </section>
 </body>
 
 </html>
