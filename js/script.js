@@ -317,3 +317,114 @@ Game.prototype.checkGoal = function() {
       body.className = '';
     }
 }
+
+/*
+ * Changes the level of the game object.
+ */
+Game.prototype.changeLevel = function() {
+    
+    // update the level index.
+    this.level_idx ++;
+
+    // if higher than max index, set back to zero.
+       if (this.level_idx > levels.length -1) {
+         this.level_idx = 0;
+    }
+    
+    // get the level at this index.
+    let level = levels[this.level_idx];
+    
+    // sync the map with the level map.
+    this.map = level.map;
+    // sync the theme with the level theme.
+    this.theme = level.theme;
+
+    // make a copy of the level's player object, since x and y change during the game.
+    this.player = {...level.player};
+
+    // make a copy of the level's goal object, since x and y change between levels.
+    this.goal = {...level.goal};
+ }
+
+ /*
+  * If goal has been reached, 
+  */
+ Game.prototype.addMazeListener = function() {
+
+   // grab the map
+
+   let map = this.el.querySelector('.game-map');
+
+   // grab reference to game object since we are going into a function 
+   // and "this" will no longer refer to the game object
+
+   let obj = this;
+
+   // if game board is clicked or tapped, see if we should change levels
+   map.addEventListener('mousedown',function(e) {
+     
+       // if not at the goal, then get outta here
+       if (obj.player.y != obj.goal.y ||
+       obj.player.x != obj.goal.x) {
+         return;
+       }
+       // change level of game object by changing it's properties
+       obj.changeLevel();
+       
+       // get the two layers
+       let layers = obj.el.querySelectorAll('.layer');
+      
+       // clear tiles and sprites from layers
+       for (layer of layers) {
+           layer.innerHTML = '';
+       }
+       
+       // place the new level.
+       obj.placeLevel();
+     
+       // check the goal to reset the message.
+       obj.checkGoal();
+      
+   });
+ };
+
+/*
+ *  Responds to a keydown event by moving the player and checking the goal.
+ */
+Game.prototype.keyboardListener = function() {
+  document.addEventListener('keydown', event => {
+      this.movePlayer(event);
+      this.checkGoal();
+  });
+  
+ }
+ /*
+  * Adds mouse down listeners to buttons
+  */
+ Game.prototype.buttonListeners = function() {
+   let up = document.getElementById('up');
+   let left = document.getElementById('left');
+   let down = document.getElementById('down')
+   let right = document.getElementById('right');
+   
+   // the sprite is out of date
+   let obj = this;
+   up.addEventListener('mousedown',function() {
+  
+     obj.moveUp();
+     obj.checkGoal();   
+   });
+    down.addEventListener('mousedown',function() {
+     obj.moveDown();
+     obj.checkGoal();   
+   });
+    left.addEventListener('mousedown',function() {
+     obj.moveLeft();
+     obj.checkGoal();   
+   });
+    right.addEventListener('mousedown',function() {
+     obj.moveRight();
+     obj.checkGoal();   
+   });
+   
+ }
