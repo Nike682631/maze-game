@@ -84,3 +84,87 @@ levels[2] = {
     // make a copy of the goal.
     this.goal = {...level.goal};
   }
+
+/*
+ * Create a tile or sprite <div> element.
+ * @param {Number} x - the horizontal coordinate the 2D array.
+ * @param {Number} y - the vertical coordinate in the 2D array.
+ */
+Game.prototype.createEl = function(x,y,type) {
+    // create one tile.
+   let el = document.createElement('div');
+        
+   // two class names: one for tile, one or the tile type.
+   el.className = type;
+   
+   // set width and height of tile based on the passed-in dimensions.
+   el.style.width = el.style.height = this.tileDim + 'px';
+   
+   // set left positions based on x coordinate.
+   el.style.left = x*this.tileDim + 'px';
+   
+   // set top position based on y coordinate.
+   el.style.top = y*this.tileDim + 'px';
+       
+   return el;
+ }
+ 
+ /*
+  * Applies the level theme as a class to the game element. 
+  * Populates the map by adding tiles and sprites to their respective layers.
+  */
+ Game.prototype.populateMap = function() {
+   
+   // add theme call
+   this.el.className = 'game-container ' + this.theme;
+ 
+   // make a reference to the tiles layer in the DOM.
+   let tiles = this.el.querySelector('#tiles');
+   
+   // set up our loop to populate the grid.
+   for (var y = 0; y < this.map.length; ++y) {
+     for (var x = 0; x < this.map[y].length; ++x) {
+       
+        let tileCode = this.map[y][x];
+ 
+         // determine tile type using code
+         // index into the tileTypes array using the code.
+        let tileType = this.tileTypes[tileCode];
+       
+        // call the helper function
+        let tile = this.createEl(x,y,tileType);
+        
+        // add to layer
+        tiles.appendChild(tile);
+     }
+   }
+ }
+ 
+ /*
+  * Place the player or goal sprite.
+  * @param {String} type - either 'player' or 'goal', used by createEl and becomes DOM ID
+  */
+ Game.prototype.placeSprite = function(type) {
+   
+   // syntactic sugar
+   let x = this[type].x
+   
+   let y = this[type].y;
+   
+   // reuse the createTile function
+   let sprite  = this.createEl(x,y,type);
+   
+   sprite.id = type;
+   
+   // set the border radius of the sprite.
+   sprite.style.borderRadius = this.tileDim + 'px';
+   
+   // get half the difference between tile and sprite.
+   
+   // grab the layer
+   let layer = this.el.querySelector('#sprites');
+   
+   layer.appendChild(sprite);
+   
+   return sprite;
+ }
