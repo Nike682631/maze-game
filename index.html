@@ -2,11 +2,9 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>Maze Game</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/style.css'>
 </head>
 <body>
     <div id="game-container-1" class="game-container">
@@ -14,8 +12,14 @@
             <div id="game-map-1" class="game-map">
                 <div id="tiles" class="layer"></div>
                 <div id="sprites" class="layer"></div>
+
+                <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
             </div>
         </div>
+        <p id="text-1" class="text">
+            Use cursor keys or buttons.
+         <p>
     </div>
+    <script src="js/script.js"></script>
 </body>
 </html>
