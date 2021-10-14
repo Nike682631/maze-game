@@ -261,3 +261,59 @@ Game.prototype.collide = function() {
      this.updateVert();
     
   };
+
+  /* 
+ *  Updates vertical position of player sprite based on object's y coordinates.
+ */
+Game.prototype.updateVert = function() { 
+    this.player.el.style.top = this.player.y * this.tileDim+ 'px';
+};
+/* 
+*  Updates horizontal position of player sprite based on object's x coordinates.
+*/  
+Game.prototype.updateHoriz = function() {
+    this.player.el.style.left = this.player.x * this.tileDim + 'px'; 
+};
+/*
+* Moves player based on keyboard cursor presses.
+*/
+Game.prototype.movePlayer = function(event) {
+   event.preventDefault();
+   
+   if (event.keyCode < 37 || event.keyCode > 40) {
+     return;
+   }
+
+   switch (event.keyCode) { 
+     case 37:
+     this.moveLeft();
+     break;
+     
+     case 38:       
+     this.moveUp();
+     break;
+
+     case 39:
+     this.moveRight();
+     break;
+       
+     case 40:
+     this.moveDown();
+     break;
+   }
+}
+/*
+* Check on whether goal has been reached.
+*/
+Game.prototype.checkGoal = function() {
+    let body = document.querySelector('body');
+ 
+    if (this.player.y == this.goal.y &&
+      this.player.x == this.goal.x) {
+      
+      body.className = 'success';
+    }
+    else {
+      body.className = '';
+    }
+}
