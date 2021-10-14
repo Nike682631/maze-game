@@ -1,3 +1,7 @@
+let app = {};
+
+
+(function(context) {
 let levels = [];
 
 let levels = [];
@@ -500,3 +504,10 @@ context.init = function () {
     myGame.addListeners();
 
 }
+})(app);
+
+/*
+ * Tell app to activate the init() function.
+ */
+
+app.init();
