@@ -168,3 +168,96 @@ Game.prototype.createEl = function(x,y,type) {
    
    return sprite;
  }
+/*
+ * Triggers a collide animation on the player sprite.
+ */
+Game.prototype.collide = function() {
+    this.player.el.className += ' collide';
+    
+    let obj = this;
+    
+    window.setTimeout(function() {
+    obj.player.el.className = 'player';
+    },200);
+    
+    return 0;
+    
+  };
+  /*
+   * Moves the player sprite left.
+   */
+  Game.prototype.moveLeft = function() {
+      // if at the boundary, return
+      if (this.player.x == 0) {
+          this.collide();
+          return;
+      }
+      // itentify next tile
+      let nextTile = this.map[this.player.y][this.player.x-1];
+    
+      // if next tile is a wall, add collide effect and return
+      if (nextTile ==1) {
+          this.collide();
+          return;
+      }
+      // change coordinates of player object
+      this.player.x -=1;
+      // update location of DOM element
+      this.updateHoriz();
+  };
+  /*
+   * Moves the player sprite up.
+   */
+  Game.prototype.moveUp = function() {
+    if (this.player.y == 0) {
+          // at end: these could be combined
+          this.collide();
+          return;
+    }
+        
+    let nextTile = this.map[this.player.y-1][this.player.x];
+    if (nextTile ==1) {
+          this.collide();
+          return;
+    }
+    this.player.y -=1;
+    this.updateVert();
+    
+  };
+  /*
+   * Moves the player sprite right.
+   */
+  Game.prototype.moveRight = function()  {
+     if (this.player.x == this.map[this.player.y].length-1) {
+          this.collide();
+          return;
+     }
+     nextTile = this.map[this.player.y][this.player.x+1];
+          
+     if (nextTile ==1) {
+          this.collide()
+          return;
+     }
+     this.player.x += 1;
+     
+     this.updateHoriz();
+  };
+  /*
+   * Moves player sprite down.
+   */
+  Game.prototype.moveDown = function()  {
+    if (this.player.y == this.map.length-1) {
+          this.collide();
+          return;
+     }
+     // find the next tile in the 2D array.
+          
+     let nextTile = this.map[this.player.y+1][this.player.x];
+      if (nextTile ==1) {
+          this.collide()
+          return;
+     }
+     this.player.y += 1;
+     this.updateVert();
+    
+  };
