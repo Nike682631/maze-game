@@ -277,7 +277,7 @@ var maze = function (X, Y) {
             for (var i = 0; i < 2 * this.N + 1; i++) {
                 for (var j = 0; j < 2 * this.M + 1; j++) {
                     if (this.Board[i][j] != ' ') {//} && this.Board[i][j] != '&') {
-                        this.ctx.fillStyle = "#0b052d";
+                        this.ctx.fillStyle = "#0b099d";
                         this.ctx.fillRect(scale * i, scale * j, scale, scale);
                     }
                     else if (i < 5 && j < 5)
@@ -306,7 +306,7 @@ var maze = function (X, Y) {
     this.moveclear = function (a, b) {
         var scale = this.S;
         this.ctx = this.canvas.getContext('2d');
-        this.ctx.fillStyle = "#e27158";
+        this.ctx.fillStyle = "#00fefa";
         this.ctx.fillRect(scale * a, scale * b, scale, scale);
         this.Board[a][b] = ' '
     }
